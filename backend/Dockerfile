@@ -11,6 +11,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar todos os arquivos locais para o container
 COPY . /app
 
+ENV DATABASE_URL=""
+
 # Instruir a porta em que a aplicação será executada
 EXPOSE 8000
 

@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+
+  backend:
+    build: ./backend
+    volumes:
+      - sqlite-data:/app/db
+    environment:
+      - DATABASE_URL=sqlite:///./db/mydatabase.db
+    ports:
+      - "8000:8000"
+    depends_on:
+      - sqlite
+
+  sqlite:
+    image: alpine
+    volumes:
+      - sqlite-data:/app/db
+    command: >
+      sh -c "touch /app/db/mydatabase.db && tail -f /dev/null"
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  sqlite-data:
+
+networks:
+  default:
