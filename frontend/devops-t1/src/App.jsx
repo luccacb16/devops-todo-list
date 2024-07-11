@@ -10,9 +10,9 @@ function App() {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('http://localhost:5000/tasks');
+      const response = await fetch('http://localhost:8000/get/');
       const data = await response.json();
-      setTasks(data);
+      setTasks(data.tasks); // Ensure data.tasks is used
     } catch (error) {
       console.error('Failed to fetch tasks', error);
     }
@@ -21,15 +21,15 @@ function App() {
   const addTask = async () => {
     if (input) {
       try {
-        const response = await fetch('http://localhost:5000/tasks', {
+        const response = await fetch('http://localhost:8000/add/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ title: input }),
+          body: JSON.stringify({ task: input }),
         });
         const newTask = await response.json();
-        setTasks([...tasks, newTask]);
+        setTasks([...tasks, { id: newTask.id, tarefa: input }]);
         setInput('');
       } catch (error) {
         console.error('Failed to add task', error);
@@ -39,7 +39,7 @@ function App() {
 
   const removeTask = async (id) => {
     try {
-      await fetch(`http://localhost:5000/tasks/${id}`, {
+      await fetch(`http://localhost:8000/del/${id}`, {
         method: 'DELETE',
       });
       setTasks(tasks.filter(task => task.id !== id));
@@ -69,7 +69,7 @@ function App() {
       <ul className="mt-4 w-80">
         {tasks.map((task) => (
           <li key={task.id} className="flex justify-between items-center p-2 bg-white shadow rounded mt-2">
-            <span>{task.title}</span>
+            <span>{task.tarefa}</span>
             <button
               onClick={() => removeTask(task.id)}
               className="text-red-500 hover:text-red-700"

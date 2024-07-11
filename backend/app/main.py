@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from .models import Task, TaskModel
 from .database import SessionLocal, init_db
 
@@ -6,6 +7,14 @@ init_db()
 
 app = FastAPI()
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this as necessary to specify allowed origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 @app.post("/add/")
 def add(task: TaskModel):
     db = SessionLocal()
