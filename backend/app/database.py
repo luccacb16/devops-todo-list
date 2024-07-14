@@ -6,6 +6,9 @@ import os
 
 DATABASE_URL = os.environ['DATABASE_URL']
 
+# URL de teste
+#DATABASE_URL = "sqlite:///./test.db" 
+
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
