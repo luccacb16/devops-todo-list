@@ -1,9 +1,9 @@
-Construir a Imagem
+Docker compose da aplicação
 ```
-docker build -t todo-list-app .
+docker compose up
 ```
 
-Executar a Imagem
+Acessando a aplicação pelo frontend
 ```
-docker run -d -p 8000:8000 todo-list-app
+http://localhost:80/
 ```
