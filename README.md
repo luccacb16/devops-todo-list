@@ -5,5 +5,5 @@ docker compose up
 
 Acessando a aplicação pelo frontend
 ```
-http://localhost:80/
+http://localhost:5043/
 ```
