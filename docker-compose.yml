@@ -1,17 +1,18 @@
 version: '3.8'
 
 services:
-
   backend:
     build: ./backend
     volumes:
       - sqlite-data:/app/db
     environment:
-      - DATABASE_URL=sqlite:///./db/mydatabase.db
+      - DATABASE_URL=sqlite:////app/db/mydatabase.db
     ports:
       - "8000:8000"
     depends_on:
       - sqlite
+    networks:
+      - app-network
 
   sqlite:
     image: alpine
@@ -19,6 +20,9 @@ services:
       - sqlite-data:/app/db
     command: >
       sh -c "touch /app/db/mydatabase.db && chmod 666 /app/db/mydatabase.db && tail -f /dev/null"
+    networks:
+      - db-network
+      - app-network
 
   frontend:
     build: ./frontend
@@ -26,9 +30,14 @@ services:
       - "5043:80"
     depends_on:
       - backend
+    networks:
+      - app-network
 
 volumes:
   sqlite-data:
 
 networks:
-  default:
+  app-network:
+    driver: bridge
+  db-network:
+    driver: bridge
