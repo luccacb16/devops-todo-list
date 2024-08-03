@@ -10,9 +10,9 @@ function App() {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('http://backend:8000/get/');
+      const response = await fetch('/api/get/');
       const data = await response.json();
-      setTasks(data.tasks); // Ensure data.tasks is used
+      setTasks(data.tasks);
     } catch (error) {
       console.error('Failed to fetch tasks', error);
     }
@@ -21,7 +21,7 @@ function App() {
   const addTask = async () => {
     if (input) {
       try {
-        const response = await fetch('http://backend:8000/add/', {
+        const response = await fetch('/api/add/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ function App() {
 
   const removeTask = async (id) => {
     try {
-      await fetch(`http://backend:8000/del/${id}`, {
+      await fetch(`/api/del/${id}`, {
         method: 'DELETE',
       });
       setTasks(tasks.filter(task => task.id !== id));
