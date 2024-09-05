@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: luccacb16/backend:latest
+        env:
+          - name: DATABASE_URL
+            value: "sqlite:////app/db/mydatabase.db"
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: sqlite-data
+          mountPath: /app/db
+      volumes:
+      - name: sqlite-data
+        persistentVolumeClaim:
+          claimName: sqlite-pvc

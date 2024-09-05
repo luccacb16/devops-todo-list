@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlite
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlite
+  template:
+    metadata:
+      labels:
+        app: sqlite
+    spec:
+      containers:
+      - name: sqlite
+        image: alpine
+        command: ["/bin/sh", "-c", "touch /app/db/mydatabase.db && chmod 666 /app/db/mydatabase.db && tail -f /dev/null"]
+        volumeMounts:
+        - name: sqlite-data
+          mountPath: /app/db
+      volumes:
+      - name: sqlite-data
+        persistentVolumeClaim:
+          claimName: sqlite-pvc
